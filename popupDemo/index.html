@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>mask</title>
+    <style>
+        html,body{width:100%;height:100%;}
+        #mask{
+            background:#000;
+            opacity:0.75;
+            filter:alpha(opacity=75);
+            height:1000px;
+            width:100%;
+            position:absolute;
+            left:0;
+            top:0;
+            z-index:1000;
+        }
+        #login{
+            position:fixed;
+            left:30%;
+            top:30%;
+            z-index:1001;
+        }
+        .loginCon{
+            width:670px;
+            height:380px;
+            background:url(img/loginBg.png) no-repeat;
+            position: relative;
+        }
+        #close{
+            width:30px;
+            height:30px;
+            background:url(img/close.png) no-repeat;
+            cursor: pointer;
+            position:absolute;
+            right:5px;
+            top:5px;
+        }
+    </style>
+    <script>
+        function openNew(){
+            //获取页面的高度
+            var sHeight = document.documentElement.scrollHeight;
+            var sWidth = document.documentElement.scrollWidth;
+            //可视区域的高度
+            var wHeight = document.documentElement.clientHeight;
+
+            var oMask = document.createElement('div');
+            oMask.id = 'mask';
+            oMask.style.height = sHeight+'px';
+            oMask.style.width = sWidth+'px';
+            document.body.appendChild(oMask);
+
+            var oLogin = document.createElement('div');
+            oLogin.id = 'login';
+            oLogin.innerHTML = "<div class='loginCon'><div id='close'></div></div>";
+            document.body.appendChild(oLogin);
+
+            //获取login的宽和高
+            var dHeight = oLogin.offsetHeight;
+            var dWidth = oLogin.offsetWidth;
+
+            oLogin.style.left = (sWidth-dWidth)/2+'px';
+            oLogin.style.top = (wHeight-dHeight)/2+'px';
+
+            var oClose = document.getElementById('close');
+            oMask.onclick=oClose.onclick = function(){
+                //点击关闭时，删除遮罩层和登录框
+                document.body.removeChild(oMask);
+                document.body.removeChild(oLogin);
+            }
+        }
+        window.onload = function(){
+            var oBtn = document.getElementById('btnLogin');
+            oBtn.onclick = function(){
+                openNew();
+            };
+        }
+    </script>
+</head>
+<body>
+    <button id="btnLogin">点击弹出遮罩层</button>
+</body>
+</html>
